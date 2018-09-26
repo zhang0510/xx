@@ -15,10 +15,10 @@ class IndexController extends CommonController
     //入口
     public function actionIndex(){
         $request = Yii::$app->request;
-        $echoStr = $request->getParam("echostr");
-        $signature = $request->getParam("signature");
-        $timestamp = $request->getParam("timestamp");
-        $nonce = $request->getParam("nonce");
+        $echoStr = $request->post("echostr");
+        $signature = $request->post("signature");
+        $timestamp = $request->post("timestamp");
+        $nonce = $request->post("nonce");
         if($this->checkSignature($signature,$timestamp,$nonce)){
             echo $echoStr;
             exit;
