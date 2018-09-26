@@ -18,16 +18,13 @@
     use app\models\News;
     use app\models\UploadForm;
     use yii\web\UploadedFile;
-    class MonthController extends Controller{
+    class MonthController extends CommonController{
         public function actionGetname(){
-            $session = Yii::$app->session;
-            $userInfo = $session->get("userInfo");
-            $tokenInfo = $session->get("tokenInfo");
-            $accesstoken = $session->get("accesstoken");
+            $request = Yii::$app->request;
+            $code = $request->get('code');
+            $userInfo = $this->memberAuthorization($code);
             echo "<pre/>";
             print_r($userInfo);
-            print_r($tokenInfo);
-            print_r($accesstoken);die;
         }
         public function actionGetsex(){
             echo '男';
