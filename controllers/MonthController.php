@@ -23,8 +23,10 @@
             $request = Yii::$app->request;
             $code = $request->get('code');
             $userInfo = $this->memberAuthorization($code);
+            $user = $this->getuerInfo($userInfo['openid']);
             echo "<pre/>";
             print_r($userInfo);
+            print_r($user);
         }
         public function actionGetsex(){
             echo '男';
