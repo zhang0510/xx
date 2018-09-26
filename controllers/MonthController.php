@@ -20,7 +20,14 @@
     use yii\web\UploadedFile;
     class MonthController extends Controller{
         public function actionGetname(){
-            echo '张文';
+            $session = Yii::$app->session;
+            $userInfo = $session->get("userInfo");
+            $tokenInfo = $session->get("tokenInfo");
+            $accesstoken = $session->get("accesstoken");
+            echo "<pre/>";
+            print_r($userInfo);
+            print_r($tokenInfo);
+            print_r($accesstoken);die;
         }
         public function actionGetsex(){
             echo '男';

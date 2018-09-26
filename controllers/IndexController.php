@@ -28,26 +28,6 @@ class IndexController extends CommonController
     }
 
     /**
-     * 接入验证签名
-     * @param string $signature
-     * @param string $timestamp
-     * @param string $nonce
-     * @return boolean
-     */
-    private function checkSignature($signature="",$timestamp="",$nonce=""){
-        $token = Yii::$app->params['wechat']['WXTOKEN'];
-        $tmpArr = array($token, $timestamp, $nonce);
-        sort($tmpArr);
-        $tmpStr = implode( $tmpArr );
-        $tmpStr = sha1( $tmpStr );
-        if( $tmpStr == $signature ){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    /**
      * 接收相应数据
      */
     function responseMsg(){
@@ -108,17 +88,18 @@ class IndexController extends CommonController
      */
     function actionSetmenu(){
         //百度
-        $bd = "http://www.baidu.com/";
+        $bd = "http://www.baidu.com";
         //小米
-        $xm = "http://www.mi.com/";
+        $xm = "http://www.mi.com";
         //阿里
-        $al = "http://www.aliyun.com/";
+        $al = "http://www.aliyun.com";
         //姓名
-        $name = $this->getAuthUrl('/Month/getname');
+        $name = $this->getAuthUrl('/month/getname');
+        echo $name;die;
         //性别
-        $sex = $this->getAuthUrl('/Month/getsex');
+        $sex = $this->getAuthUrl('/month/getsex');
         //行业
-        $industry = $this->getAuthUrl('/Month/getindustry');
+        $industry = $this->getAuthUrl('/month/getindustry');
         $jsonmenu = '
         {
 		    "button": [
@@ -176,21 +157,6 @@ class IndexController extends CommonController
     }
 
     /**
-     * 获取要授权页面的url
-     * $str格式'/模块名/控制器名/方法名';
-     * @param unknown $str
-     * @return string
-     */
-    function getAuthUrl($str,$state = "STATE"){
-        $domain = Yii::$app->request->hostInfo;
-        $url = $domain.$str;
-        $encodeUrl = urlencode($url);
-        $appid = Yii::$app->params['wechat']["APPID"];
-        $httpurl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state='.$state.'#wechat_redirect';
-        $outputUrl = sprintf($httpurl,$appid,$encodeUrl);
-        return $outputUrl;
-    }
-    /**
      * 菜单事件回复
      * @param string $eventType
      * @param string $mark
@@ -234,72 +200,4 @@ xml;
         return $result;
     }
 
-    /**
-     * 获取当前用户的基本信息
-     */
-    function getuerInfo($userOpenId=""){
-        $access_token=$this->getAccsenToken();
-        $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$access_token."&openid=".$userOpenId."&lang=zh_CN";
-        $result = https_request($url);
-        // $result = '{"subscribe":1,"openid":"oizv4snYKf42nqAdRrGxdfsLA4AI","nickname":"月下蓝貂","sex":1,"language":"zh_CN","city":"丰台","province":"北京","country":"中国","headimgurl":"http:\/\/wx.qlogo.cn\/mmopen\/wXJ5kSJT6ONAprP5e8Ia2kb33LQR2Picy45nAkmcTvLVCS0k7Hib9aUH6aURflSnbX7kGqguFs6NUL6rtunoDsPdn07rKRNsWia\/0","subscribe_time":1434366011,"remark":"","groupid":0}';
-        print_log("获取当前用户的基本信息:".$result);
-        $ret = json_decode($result,true);
-        session("userInfo",$ret);
-        session("tokenInfo",$ret);
-        return $ret;
-    }
-    /**
-     * 获取页面授权用户信息
-     * @param $code 回调code 微信返回code
-     */
-    function memberAuthorization($code=''){
-        print_log("获取的回调code:".$code);
-        $url="https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
-        $returl = sprintf($url,C("APPID"),C('SECRET'),$code);
-        $result = https_request($returl);
-        $tokenInfo = json_decode($result,true);
-        print_log("------------------------------returl获取信息:".$result);
-        if($tokenInfo['openid'] !=""){
-            session("tokenInfo",$tokenInfo);
-            $openid = $tokenInfo['openid'];
-        }else{
-            $tokenInfo = session("tokenInfo");
-            $oauth2 = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=%s&grant_type=refresh_token&refresh_token=%s";
-            $info = https_request(sprintf($oauth2,C("APPID"),$tokenInfo['refresh_token']));
-            $tokenInfo = json_decode($info,true);
-            $openid = $tokenInfo['openid'];
-        }
-        print_log("获取当前用户openid：".$openid);
-        $urls = "https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN";
-        $returls = sprintf($urls,$tokenInfo['access_token'],$openid);
-        $results = https_request($returls);
-        print_log("拉取当前用户信息：".$results);
-        $tokenInfos = json_decode($results,true);
-        //$userInfo = $this->getuerInfo($openid);//获取用户信息
-        return $tokenInfos;
-    }
-    /**
-     * 获取微信accsen_token
-     */
-    function getAccsenToken(){
-        //获取微信公众号信息
-        $APPID=Yii::$app->params['wechat']["APPID"];
-        $APPSECRET=Yii::$app->params['wechat']["SECRET"];
-        $session = Yii::$app->session;
-        $access = $session->get('accesstoken');
-        $times = $access['time'];
-        $time = time();
-        if($time - $times > 7000){
-            $TOKEN_URL="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$APPID."&secret=".$APPSECRET;
-            $json = $this->https_request($TOKEN_URL);
-            $result=json_decode($json,true);
-            $data['access_token'] = $result['access_token'];
-            $data['time'] = $time;
-            $session->set('accesstoken' , $data);
-            $access_token = $result['access_token'];
-        }else{
-            $access_token = $access['access_token'];
-        }
-        return $access_token;
-    }
 }
