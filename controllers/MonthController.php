@@ -19,9 +19,14 @@
     use app\models\UploadForm;
     use yii\web\UploadedFile;
     class MonthController extends Controller{
-        public $enableCsrfValidation = false;
-        public function actionLogin(){
-            return $this -> renderPartial('login');
+        public function actionGetname(){
+            echo '张文';
+        }
+        public function actionGetsex(){
+            echo '男';
+        }
+        public function actionGetindustry(){
+            echo 'IT';
         }
         public function actionLogine(){
             $request = Yii::$app->request;
