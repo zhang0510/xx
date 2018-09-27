@@ -168,34 +168,27 @@ class IndexController extends CommonController
         $CLICK = $object->EventKey;
         $result="";
         if($subscribe=="subscribe"){//关注后发出信息
-            //获取用户OpeniD
-            $content = C("CONTENT");
-            $xmlTpl = <<<xml
-	             <xml>
-	             <ToUserName><![CDATA[%s]]></ToUserName>
-	             <FromUserName><![CDATA[%s]]></FromUserName>
-	             <CreateTime>%s</CreateTime>
-	             <MsgType><![CDATA[text]]></MsgType>
-	             <Content><![CDATA[%s]]></Content>
-	             </xml>
-xml;
-            $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $content);
+            $content = '谢谢你的关注';
         }else if($CLICK=="KEFU"){
-            //获取用户OpeniD
-            $content = C("KE_FU");
-            $xmlTpl = <<<xml
-	             <xml>
-	             <ToUserName><![CDATA[%s]]></ToUserName>
-	             <FromUserName><![CDATA[%s]]></FromUserName>
-	             <CreateTime>%s</CreateTime>
-	             <MsgType><![CDATA[text]]></MsgType>
-	             <Content><![CDATA[%s]]></Content>
-				 <MsgId>1234567890123456</MsgId>
-	             </xml>
-	             
-xml;
-            $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $content);
+            $content = '';
         }
+        $result = $this->transmitText($object, $content);
+        return $result;
+    }
+
+    /**
+     * 回复文本消息
+     */
+    private function transmitText($object, $content)
+    {
+        $xmlTpl = "<xml>
+                        <ToUserName><![CDATA[%s]]></ToUserName>
+                        <FromUserName><![CDATA[%s]]></FromUserName>
+                        <CreateTime><![CDATA[%s]]></CreateTime>
+                        <MsgType><![CDATA[text]]></MsgType>
+                        <Content><![CDATA[%s]]></Content>
+                    </xml>";
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $content);
         return $result;
     }
 
