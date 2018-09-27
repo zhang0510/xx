@@ -78,7 +78,6 @@ class CommonController extends Controller{
         $APPSECRET=Yii::$app->params['wechat']["SECRET"];
         $url="https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
         $returl = sprintf($url,$APPID,$APPSECRET,$code);
-        echo $returl;die;
         $result = $this->https_request($returl);
         $tokenInfo = json_decode($result,true);
         $session = Yii::$app->session;
