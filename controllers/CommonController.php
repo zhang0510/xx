@@ -80,8 +80,6 @@ class CommonController extends Controller{
         $returl = sprintf($url,$APPID,$APPSECRET,$code);
         $result = $this->https_request($returl);
         $tokenInfo = json_decode($result,true);
-        echo "<pre/>";
-        var_dump($tokenInfo);die;
         $session = Yii::$app->session;
         if($tokenInfo['openid'] !=""){
             $session->set('tokenInfo',$tokenInfo);
