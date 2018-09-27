@@ -19,10 +19,12 @@ class IndexController extends CommonController
         $signature = $request->get("signature");
         $timestamp = $request->get("timestamp");
         $nonce = $request->get("nonce");
-        if($this->checkSignature($signature,$timestamp,$nonce)){
-            echo $echoStr;
-            exit;
-        }else{
+        if (isset($_GET["echostr"])){
+            if($this->checkSignature($signature,$timestamp,$nonce)){
+                echo $echoStr;
+                exit;
+            }
+        }else {
             $this->responseMsg();
         }
     }
