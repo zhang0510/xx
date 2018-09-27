@@ -95,7 +95,6 @@ class IndexController extends CommonController
         $al = "http://www.aliyun.com";
         //姓名
         $name = $this->getAuthUrl('/month/getname');
-        echo $name;die;
         //性别
         $sex = $this->getAuthUrl('/month/getsex');
         //行业

@@ -20,12 +20,9 @@ use app\models\UploadForm;
 use yii\web\UploadedFile;
 class MonthController extends CommonController{
     public function actionGetname(){
-        $session = Yii::$app->session;
-        $userInfo = $session->get('tokenInfo');
-        /*$request = Yii::$app->request;
+        $request = Yii::$app->request;
         $code = $request->get('code');
-        $user = $this->memberAuthorization($code);*/
-        $user = $this->getuerInfo($userInfo['openid']);
+        $user = $this->memberAuthorization($code);
         echo "<pre/>";
         print_r($user);
     }
