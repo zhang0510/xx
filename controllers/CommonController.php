@@ -81,7 +81,7 @@ class CommonController extends Controller{
         $result = $this->https_request($returl);
         $tokenInfo = json_decode($result,true);
         $session = Yii::$app->session;
-        if($tokenInfo['openid'] !=""){
+        if(!empty($tokenInfo['access_token']) && !empty($tokenInfo['openid'])){
             $session->set('tokenInfo',$tokenInfo);
             $openid = $tokenInfo['openid'];
         }else{
