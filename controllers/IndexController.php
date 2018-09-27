@@ -28,6 +28,26 @@ class IndexController extends CommonController
     }
 
     /**
+     * 接入验证签名
+     * @param string $signature
+     * @param string $timestamp
+     * @param string $nonce
+     * @return boolean
+     */
+    private function checkSignature($signature="",$timestamp="",$nonce=""){
+        $token = Yii::$app->params['wechat']['WXTOKEN'];
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+        if( $tmpStr == $signature ){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
      * 接收相应数据
      */
     function responseMsg(){
@@ -153,6 +173,22 @@ class IndexController extends CommonController
         }else{
             echo "菜单生成失败:".$retArr['errmsg'];
         }
+    }
+
+    /**
+     * 获取要授权页面的url(菜单路径生成)
+     * $str格式'/模块名/控制器名/方法名';
+     * @param unknown $str
+     * @return string
+     */
+    function getAuthUrl($str,$state = "STATE"){
+        $domain = Yii::$app->params['wechat']['REQUEST_PATH'];
+        $url = $domain.$str;
+        $encodeUrl = urlencode($url);
+        $appid = Yii::$app->params['wechat']["APPID"];
+        $httpurl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state='.$state.'#wechat_redirect';
+        $outputUrl = sprintf($httpurl,$appid,$encodeUrl);
+        return $outputUrl;
     }
 
     /**

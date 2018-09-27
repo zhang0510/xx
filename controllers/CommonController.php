@@ -19,41 +19,6 @@ use app\models\News;
 use app\models\UploadForm;
 use yii\web\UploadedFile;
 class CommonController extends Controller{
-    /**
-     * 接入验证签名
-     * @param string $signature
-     * @param string $timestamp
-     * @param string $nonce
-     * @return boolean
-     */
-    private function checkSignature($signature="",$timestamp="",$nonce=""){
-        $token = Yii::$app->params['wechat']['WXTOKEN'];
-        $tmpArr = array($token, $timestamp, $nonce);
-        sort($tmpArr);
-        $tmpStr = implode( $tmpArr );
-        $tmpStr = sha1( $tmpStr );
-        if( $tmpStr == $signature ){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    /**
-     * 获取要授权页面的url
-     * $str格式'/模块名/控制器名/方法名';
-     * @param unknown $str
-     * @return string
-     */
-    function getAuthUrl($str,$state = "STATE"){
-        $domain = Yii::$app->params['wechat']['REQUEST_PATH'];
-        $url = $domain.$str;
-        $encodeUrl = urlencode($url);
-        $appid = Yii::$app->params['wechat']["APPID"];
-        $httpurl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state='.$state.'#wechat_redirect';
-        $outputUrl = sprintf($httpurl,$appid,$encodeUrl);
-        return $outputUrl;
-    }
 
     /**
      * 获取当前用户的基本信息
@@ -68,6 +33,7 @@ class CommonController extends Controller{
         $session->set("userInfos",$ret);
         return $ret;
     }
+
     /**
      * 获取页面授权用户信息
      * @param $code 回调code 微信返回code
