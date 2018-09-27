@@ -66,7 +66,6 @@ class CommonController extends Controller{
         $ret = json_decode($result,true);
         $session = Yii::$app->session;
         $session->set("userInfo",$ret);
-        $session->set("tokenInfo",$ret);
         return $ret;
     }
     /**

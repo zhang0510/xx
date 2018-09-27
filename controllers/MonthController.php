@@ -23,8 +23,10 @@ class MonthController extends CommonController{
         $request = Yii::$app->request;
         $code = $request->get('code');
         $user = $this->memberAuthorization($code);
+        $userInfo = $this->getuerInfo($user['openid']);//获取用户信息
         echo "<pre/>";
         print_r($user);
+        print_r($userInfo);
     }
     public function actionGetsex(){
         echo '男';
