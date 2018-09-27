@@ -164,13 +164,14 @@ class IndexController extends CommonController
         /**
          * 微信点击客服事件,关注/取消,触发
          */
-        $subscribe = $object->Event;
-        $CLICK = $object->EventKey;
-        $result="";
-        if($subscribe=="subscribe"){//关注后发出信息
-            $content = '谢谢你的关注';
-        }else if($CLICK=="KEFU"){
-            $content = '';
+        switch ($object->Event){
+            //关注公众号事件
+            case "subscribe":
+                $content = "欢迎关注张文的公众号";
+                break;
+            default:
+                $content = "";
+                break;
         }
         $result = $this->transmitText($object, $content);
         return $result;
