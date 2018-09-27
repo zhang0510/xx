@@ -98,7 +98,7 @@ class IndexController extends CommonController
         //性别
         $sex = $this->getAuthUrl('/month/getsex');
         //行业
-        $industry = $this->getAuthUrl('/month/getindustry');
+        $industry = $this->getAuthUrl('/month/getarea');
         $jsonmenu = '
         {
 		    "button": [
@@ -117,7 +117,7 @@ class IndexController extends CommonController
 		                }, 
 		                {
 		                    "type": "view", 
-		                    "name": "行业", 
+		                    "name": "地址", 
 		                    "url":"'.$industry.'"
 		                }
 		            ]

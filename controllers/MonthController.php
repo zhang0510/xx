@@ -20,19 +20,34 @@ use app\models\UploadForm;
 use yii\web\UploadedFile;
 class MonthController extends CommonController{
     public function actionGetname(){
-        $request = Yii::$app->request;
-        $code = $request->get('code');
-        $user = $this->memberAuthorization($code);
-        $userInfo = $this->getuerInfo($user['openid']);//获取用户信息
-        echo "<pre/>";
-        print_r($user);
-        print_r($userInfo);
+        $session = Yii::$app->session;
+        $userInfo = $session->get("userInfo");
+        if(empty($userInfo)){
+            $request = Yii::$app->request;
+            $code = $request->get('code');
+            $userInfo = $this->memberAuthorization($code);
+        }
+        echo $userInfo['nickname'];
     }
     public function actionGetsex(){
-        echo '男';
+        $session = Yii::$app->session;
+        $userInfo = $session->get("userInfo");
+        if(empty($userInfo)){
+            $request = Yii::$app->request;
+            $code = $request->get('code');
+            $userInfo = $this->memberAuthorization($code);
+        }
+        echo $userInfo['sex'] == 1?'男':'女';
     }
-    public function actionGetindustry(){
-        echo 'IT';
+    public function actionGetarea(){
+        $session = Yii::$app->session;
+        $userInfo = $session->get("userInfo");
+        if(empty($userInfo)){
+            $request = Yii::$app->request;
+            $code = $request->get('code');
+            $userInfo = $this->memberAuthorization($code);
+        }
+        echo $userInfo['country'].'-'.$userInfo['province'].'-'.$userInfo['city'];
     }
     public function actionLogine(){
         $request = Yii::$app->request;

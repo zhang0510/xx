@@ -65,7 +65,7 @@ class CommonController extends Controller{
         // $result = '{"subscribe":1,"openid":"oizv4snYKf42nqAdRrGxdfsLA4AI","nickname":"月下蓝貂","sex":1,"language":"zh_CN","city":"丰台","province":"北京","country":"中国","headimgurl":"http:\/\/wx.qlogo.cn\/mmopen\/wXJ5kSJT6ONAprP5e8Ia2kb33LQR2Picy45nAkmcTvLVCS0k7Hib9aUH6aURflSnbX7kGqguFs6NUL6rtunoDsPdn07rKRNsWia\/0","subscribe_time":1434366011,"remark":"","groupid":0}';
         $ret = json_decode($result,true);
         $session = Yii::$app->session;
-        $session->set("userInfo",$ret);
+        $session->set("userInfos",$ret);
         return $ret;
     }
     /**
@@ -94,7 +94,7 @@ class CommonController extends Controller{
         $returls = sprintf($urls,$tokenInfo['access_token'],$openid);
         $results = $this->https_request($returls);
         $tokenInfos = json_decode($results,true);
-        //$userInfo = $this->getuerInfo($openid);//获取用户信息
+        $session->set("userInfo",$tokenInfos);
         return $tokenInfos;
     }
     /**
