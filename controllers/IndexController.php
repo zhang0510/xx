@@ -69,16 +69,16 @@ class IndexController extends CommonController
                     $result = $this->receiveImage($postObj);   //接收图片消息
                     break;
                 case "location":
-                    //$this->receiveLocation($postObj);  //接收位置消息
+                    $result = $this->receiveLocation($postObj);  //接收位置消息
                     break;
                 case "voice":
-                    //$result = $this->receiveVoice($postObj);   //接收语音消息
+                    $result = $this->receiveVoice($postObj);   //接收语音消息
                     break;
                 case "video":
-                    //$result = $this->receiveVideo($postObj);  //接收视频消息
+                    $result = $this->receiveVideo($postObj);  //接收视频消息
                     break;
                 case "link":
-                    //$result = $this->receiveLink($postObj);  //接收链接消息
+                    $result = $this->receiveLink($postObj);  //接收链接消息
                     break;
                 case "event":
                     $result =  $this->getEventReturn($postObj);//关注/取消
@@ -98,31 +98,71 @@ class IndexController extends CommonController
 
     public function receiveText($postObj)
     {
-        $content = "您输入的是" . $postObj;
-        $tousername = $postObj->FromUserName;
-        $fromusername = $postObj->ToUserName;
-        $time = time();
-        $template = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[%s]]></Content></xml>";
-        return sprintf($template, $tousername, $fromusername, $time, $content);
+        $content = "您输入的是" . $postObj->Content;
+        return $this->transmitText($postObj, $content);
     }
 
     public function receiveImage($postObj)
     {
-        $content = "您输入的是" . $postObj->Content;
-        $tousername = $postObj->FromUserName;
-        $fromusername = $postObj->ToUserName;
-        $time = time();
-        $template = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[%s]]></Content></xml>";
-        return sprintf($template, $tousername, $fromusername, $time, $content);
+        $content = "你发送的是图片，地址为：".$postObj->PicUrl;
+        return $this->transmitText($postObj, $content);
     }
 
     /*
-     * 接收文本类型
+     * 接收语音消息
      */
-    public function getText($postObj){
-        $wxair = A('Airlines');
-        $result = $wxair->wx_sent($postObj);
-        return null;
+    private function receiveVoice($postObj)
+    {
+        $content = "你发送的是语音，媒体ID为：".$postObj->MediaId;
+        $result = $this->transmitText($postObj, $content);
+        return $result;
+    }
+
+    /*
+     * 接收视频消息
+     */
+    private function receiveVideo($postObj)
+    {
+        $content = "你发送的是视频，媒体ID为：".$postObj->MediaId;
+        $result = $this->transmitText($postObj, $content);
+        return $result;
+    }
+
+    /*
+     * 接收位置消息
+     */
+    private function receiveLocation($postObj)
+    {
+        $content = "你发送的是位置，纬度为：".$postObj->Location_X."；经度为：".$postObj->Location_Y."；缩放级别为：".$postObj->Scale."；位置为：".$postObj->Label;
+        $result = $this->transmitText($postObj, $content);
+        return $result;
+    }
+
+    /*
+     * 接收链接消息
+     */
+    private function receiveLink($postObj)
+    {
+        $content = "你发送的是链接，标题为：".$postObj->Title."；内容为：".$postObj->Description."；链接地址为：".$postObj->Url;
+        $result = $this->transmitText($postObj, $content);
+        return $result;
+    }
+
+
+    /**
+     * 回复文本消息
+     */
+    private function transmitText($object, $content)
+    {
+        $xmlTpl = "<xml>
+                        <ToUserName><![CDATA[%s]]></ToUserName>
+                        <FromUserName><![CDATA[%s]]></FromUserName>
+                        <CreateTime><![CDATA[%s]]></CreateTime>
+                        <MsgType><![CDATA[text]]></MsgType>
+                        <Content><![CDATA[%s]]></Content>
+                    </xml>";
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $content);
+        return $result;
     }
 
     /**
@@ -232,22 +272,6 @@ class IndexController extends CommonController
                 break;
         }
         $result = $this->transmitText($object, $content);
-        return $result;
-    }
-
-    /**
-     * 回复文本消息
-     */
-    private function transmitText($object, $content)
-    {
-        $xmlTpl = "<xml>
-    <ToUserName><![CDATA[%s]]></ToUserName>
-    <FromUserName><![CDATA[%s]]></FromUserName>
-    <CreateTime><![CDATA[%s]]></CreateTime>
-    <MsgType><![CDATA[text]]></MsgType>
-    <Content><![CDATA[%s]]></Content>
-</xml>";
-        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $content);
         return $result;
     }
 
