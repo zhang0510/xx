@@ -109,14 +109,14 @@ class IndexController extends CommonController
     public function receiveImage($postObj)
     {
         $access_token = $this->getAccsenToken();
-        $url = "http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=".$access_token."&type=image";
-        $data =array("media" => "@"."rhlq.jpg");
-        $result = $this->https_request_up( $url, $data );
+        $url = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=%s&type=%s";
+        $outputUrl = sprintf($url,$access_token,'image');
+        $mediaid = $this->https_request($outputUrl);
         $tousername = $postObj->FromUserName;
         $fromusername = $postObj->ToUserName;
         $time = time();
         $template = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[image]]></MsgType><Image><MediaId><![CDATA[%s]]></MediaId></Image></xml>";
-        return sprintf($template, $tousername, $fromusername, $time, $result);
+        return sprintf($template, $tousername, $fromusername, $time, $mediaid->media_id);
     }
 
     function https_request_up($url, $data = null) {
