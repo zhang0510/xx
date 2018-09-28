@@ -110,7 +110,13 @@ class IndexController extends CommonController
      */
     public function receiveImage($postObj)
     {
-        return $this->transmitImage($postObj, $postObj->PicUrl);
+        $type = "image";
+        $access_token=$this->getAccsenToken();
+        $filepath = 'xx.tuotuoyunche.com/uploads/bq.jpg';//文件的绝对路径
+        $filedata = array ("media" =>$filepath);
+        $url = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=".$access_token."&type=".$type;
+        $result = https_request($url,$filedata);
+        return $this->transmitImage($postObj, $result->media_id);
     }
 
     /*
