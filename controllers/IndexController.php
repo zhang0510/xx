@@ -112,7 +112,7 @@ class IndexController extends CommonController
     {
         $type = "image";
         $access_token=$this->getAccsenToken();
-        $filepath = 'xx.tuotuoyunche.com/uploads/bq.jpg';//文件的绝对路径
+        $filepath = 'http://mmbiz.qpic.cn/mmbiz_jpg/LpkgqGHeOxN6mBST6vNUrDCHFNib17GjDkEGphZpt4iabRY9aDsxXOHLn808GFEWzCDN1ibdkzAq4FP4zU1ZCWPow/0';//文件的绝对路径
         $filedata = array ("media" =>$filepath);
         $url = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=".$access_token."&type=".$type;
         $result = https_request($url,$filedata);
