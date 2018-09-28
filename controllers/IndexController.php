@@ -108,12 +108,12 @@ class IndexController extends CommonController
 
     public function receiveImage($postObj)
     {
-        $content = "您输入的是" . $postObj->Content;
+        $img = "<img src='./uploads/bq.jpg'>";
         $tousername = $postObj->FromUserName;
         $fromusername = $postObj->ToUserName;
         $time = time();
         $template = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[image]]></MsgType><Image><MediaId><![CDATA[%s]]></MediaId></Image></xml>";
-        return sprintf($template, $tousername, $fromusername, $time, $content);
+        return sprintf($template, $tousername, $fromusername, $time, $img);
     }
 
     /*
