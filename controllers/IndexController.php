@@ -179,7 +179,7 @@ class IndexController extends CommonController
      * @param string $eventType
      * @param string $mark
      */
-    function getEventReturn($object=null){
+    function getEventReturn($object){
         /**
          * 微信点击客服事件,关注/取消,触发
          */
