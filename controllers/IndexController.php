@@ -202,12 +202,12 @@ class IndexController extends CommonController
     private function transmitText($object, $content)
     {
         $xmlTpl = "<xml>
-                        <ToUserName><![CDATA[%s]]></ToUserName>
-                        <FromUserName><![CDATA[%s]]></FromUserName>
-                        <CreateTime><![CDATA[%s]]></CreateTime>
-                        <MsgType><![CDATA[text]]></MsgType>
-                        <Content><![CDATA[%s]]></Content>
-                    </xml>";
+    <ToUserName><![CDATA[%s]]></ToUserName>
+    <FromUserName><![CDATA[%s]]></FromUserName>
+    <CreateTime><![CDATA[%s]]></CreateTime>
+    <MsgType><![CDATA[text]]></MsgType>
+    <Content><![CDATA[%s]]></Content>
+</xml>";
         $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $content);
         return $result;
     }
