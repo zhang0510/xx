@@ -19,7 +19,7 @@ class IndexController extends CommonController
         $signature = $request->get("signature");
         $timestamp = $request->get("timestamp");
         $nonce = $request->get("nonce");
-        if (isset($_GET["echostr"])){
+        if ($echoStr != ''){
             if($this->checkSignature($signature,$timestamp,$nonce)){
                 echo $echoStr;
                 exit;
@@ -58,7 +58,7 @@ class IndexController extends CommonController
             //将接收的消息处理返回一个对象
             $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             //从消息对象中获取消息的类型 text  image location voice vodeo link
-            $RX_TYPE =  strtolower(trim($postObj->MsgType));
+            $RX_TYPE =  trim($postObj->MsgType);
             //消息类型分离, 通过RX_TYPE类型作为判断， 每个方法都需要将对象$postObj传入
             switch ($RX_TYPE){
                 case "text":
@@ -198,7 +198,7 @@ class IndexController extends CommonController
      * @param string $eventType
      * @param string $mark
      */
-    function getEventReturn($object){
+    private function getEventReturn($object){
         /**
          * 微信点击客服事件,关注/取消,触发
          */
