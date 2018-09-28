@@ -175,8 +175,8 @@ class IndexController extends CommonController
         $xmlTpl = "<xml>
                         <ToUserName><![CDATA[%s]]></ToUserName>
                         <FromUserName><![CDATA[%s]]></FromUserName>
-                        <CreateTime>%s</CreateTime>
-                        <MsgType><![CDATA[%s]]></MsgType>
+                        <CreateTime><![CDATA[%s]]></CreateTime>
+                        <MsgType><![CDATA[image]]></MsgType>
                         <Image><MediaId><![CDATA[%s]]></MediaId></Image>
                     </xml>";
         $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $mediaid);
