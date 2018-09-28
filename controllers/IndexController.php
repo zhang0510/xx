@@ -13,10 +13,6 @@ use app\models\ContactForm;
 class IndexController extends CommonController
 {
     public $enableCsrfValidation = false;
-    public function init() {
-        $this->actionIndex();
-        parent::init();
-    }
     //入口
     public function actionIndex(){
         $request = Yii::$app->request;
