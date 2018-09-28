@@ -98,7 +98,7 @@ class IndexController extends CommonController
 
     public function receiveText($postObj)
     {
-        $content = "您输入的是" . $postObj->Content;
+        $content = "您输入的是" . $postObj;
         $tousername = $postObj->FromUserName;
         $fromusername = $postObj->ToUserName;
         $time = time();
