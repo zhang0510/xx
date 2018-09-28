@@ -12,6 +12,7 @@ use app\models\ContactForm;
 
 class IndexController extends CommonController
 {
+    public $enableCsrfValidation = false;
     public function init() {
         $this->actionIndex();
         parent::init();
