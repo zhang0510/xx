@@ -66,7 +66,7 @@ class IndexController extends CommonController
                     $result = $this->receiveText($postObj);     //接收文本消息
                     break;
                 case "image":
-                    //$result = $this->receiveImage($postObj);   //接收图片消息
+                    $result = $this->receiveImage($postObj);   //接收图片消息
                     break;
                 case "location":
                     //$this->receiveLocation($postObj);  //接收位置消息
@@ -103,6 +103,16 @@ class IndexController extends CommonController
         $fromusername = $postObj->ToUserName;
         $time = time();
         $template = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[%s]]></Content></xml>";
+        return sprintf($template, $tousername, $fromusername, $time, $content);
+    }
+
+    public function receiveImage($postObj)
+    {
+        $content = "您输入的是" . $postObj->Content;
+        $tousername = $postObj->FromUserName;
+        $fromusername = $postObj->ToUserName;
+        $time = time();
+        $template = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[image]]></MsgType><Image><MediaId><![CDATA[%s]]></MediaId></Image></xml>";
         return sprintf($template, $tousername, $fromusername, $time, $content);
     }
 
