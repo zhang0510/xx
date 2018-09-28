@@ -63,8 +63,7 @@ class IndexController extends CommonController
             //消息类型分离, 通过RX_TYPE类型作为判断， 每个方法都需要将对象$postObj传入
             switch ($RX_TYPE){
                 case "text":
-                    $result =  self::getText($postObj);
-                    //$result = $this->receiveText($postObj);     //接收文本消息
+                    $result = $this->receiveText($postObj);     //接收文本消息
                     break;
                 case "image":
                     //$result = $this->receiveImage($postObj);   //接收图片消息
@@ -95,6 +94,16 @@ class IndexController extends CommonController
             echo "";
             exit;
         }
+    }
+
+    public function receiveText($postObj)
+    {
+        $content = "您输入的是" . $postObj->Content;
+        $tousername = $postObj->FromUserName;
+        $fromusername = $postObj->ToUserName;
+        $time = time();
+        $template = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[%s]]></Content></xml>";
+        return sprintf($template, $tousername, $fromusername, $time, $content);
     }
 
     /*
@@ -206,7 +215,7 @@ class IndexController extends CommonController
         switch ($object->Event){
             //关注公众号事件
             case "subscribe":
-                $content = "欢迎关注张文的公众号";
+                $content = "你好啊！谢谢你的关注";
                 break;
             default:
                 $content = "";
