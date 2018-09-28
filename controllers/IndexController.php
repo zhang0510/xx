@@ -111,17 +111,15 @@ class IndexController extends CommonController
         $access_token = $this->getAccsenToken();
         $url = "http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=".$access_token."&type=image";
         $data =array("media" => "@"."rhlq.jpg");
-        $result = $this->https_request ( $url, $data );
-        var_dump ( $result );
-        /*$img = "<img src='./uploads/bq.jpg'>";
+        $result = $this->https_request_up( $url, $data );
         $tousername = $postObj->FromUserName;
         $fromusername = $postObj->ToUserName;
         $time = time();
         $template = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[image]]></MsgType><Image><MediaId><![CDATA[%s]]></MediaId></Image></xml>";
-        return sprintf($template, $tousername, $fromusername, $time, $img);*/
+        return sprintf($template, $tousername, $fromusername, $time, $result);
     }
 
-    function https_request($url, $data = null) {
+    function https_request_up($url, $data = null) {
         $curl = curl_init ();
         //curl_setopt ( $curl, CURLOPT_SAFE_UPLOAD, false); 
         curl_setopt ( $curl, CURLOPT_URL, $url );
