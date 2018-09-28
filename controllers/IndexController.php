@@ -96,16 +96,26 @@ class IndexController extends CommonController
         }
     }
 
+    /*
+     * 接受文本消息
+     */
     public function receiveText($postObj)
     {
         $content = "您输入的是" . $postObj->Content;
         return $this->transmitText($postObj, $content);
     }
 
+    /*
+     * 接收图片消息
+     */
     public function receiveImage($postObj)
     {
-        $content = "你发送的是图片，地址为：".$postObj->PicUrl;
-        return $this->transmitText($postObj, $content);
+        $access_token=$this->getAccsenToken();
+        $url_sc = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=".$access_token."&type=image";
+        $file_path = $postObj->PicUrl;
+        $file_data = array("media"  => new \CURLFile($file_path));
+        $return = $this->https_request($url_sc,$file_data);
+        return $this->transmitImage($postObj, $return->media_id);
     }
 
     /*
@@ -162,6 +172,19 @@ class IndexController extends CommonController
                         <Content><![CDATA[%s]]></Content>
                     </xml>";
         $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $content);
+        return $result;
+    }
+
+    //回复图片消息
+    public function transmitImage($object,$mediaid){
+        $xmlTpl = "<xml>
+                        <ToUserName><![CDATA[%s]]></ToUserName>
+                        <FromUserName><![CDATA[%s]]></FromUserName>
+                        <CreateTime>%s</CreateTime>
+                        <MsgType><![CDATA[%s]]></MsgType>
+                        <Image><MediaId><![CDATA[%s]]></MediaId></Image>
+                    </xml>";
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $mediaid);
         return $result;
     }
 
