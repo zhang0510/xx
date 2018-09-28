@@ -61,6 +61,25 @@ class IndexController extends CommonController
             $RX_TYPE =  strtolower(trim($postObj->MsgType));
             //消息类型分离, 通过RX_TYPE类型作为判断， 每个方法都需要将对象$postObj传入
             switch ($RX_TYPE){
+                case "text":
+                    $result =  self::getText($postObj);
+                    //$result = $this->receiveText($postObj);     //接收文本消息
+                    break;
+                case "image":
+                    //$result = $this->receiveImage($postObj);   //接收图片消息
+                    break;
+                case "location":
+                    //$this->receiveLocation($postObj);  //接收位置消息
+                    break;
+                case "voice":
+                    //$result = $this->receiveVoice($postObj);   //接收语音消息
+                    break;
+                case "video":
+                    //$result = $this->receiveVideo($postObj);  //接收视频消息
+                    break;
+                case "link":
+                    //$result = $this->receiveLink($postObj);  //接收链接消息
+                    break;
                 case "event":
                     $result =  $this->getEventReturn($postObj);//关注/取消
                     break;

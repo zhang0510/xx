@@ -28,6 +28,7 @@ class MonthController extends CommonController{
             $userInfo = $this->memberAuthorization($code);
         }
         echo $userInfo['nickname'];
+        echo $userInfo['openid'];
     }
     public function actionGetsex(){
         $session = Yii::$app->session;
