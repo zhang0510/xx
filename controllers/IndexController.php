@@ -12,6 +12,10 @@ use app\models\ContactForm;
 
 class IndexController extends CommonController
 {
+    public function init() {
+        $this->actionIndex();
+        parent::init();
+    }
     //入口
     public function actionIndex(){
         $request = Yii::$app->request;
