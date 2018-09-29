@@ -202,11 +202,11 @@ class IndexController extends CommonController
                         <MsgType><![CDATA[video]]></MsgType>
                         <Video>
                             <MediaId><![CDATA[%s]]></MediaId>
-                            <Title><![CDATA[title]]></Title>
-                            <Description><![CDATA[description]]></Description>
+                            <Title><![CDATA[%s]]></Title>
+                            <Description><![CDATA[%s]]></Description>
                         </Video>
                     </xml>";
-        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $mediaid);
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $mediaid,'你发的','这是啥');
         return $result;
     }
 
