@@ -110,7 +110,8 @@ class IndexController extends CommonController
      */
     public function receiveImage($postObj)
     {
-        return $this->transmitImage($postObj, 'TbhVIru-ZOz8yPjkMp_PlPYGcP5YF81LNvYTjC_m2NOJBokGOXG7Y-CmD2vC6Jbb');
+        //return $this->transmitImage($postObj, 'TbhVIru-ZOz8yPjkMp_PlPYGcP5YF81LNvYTjC_m2NOJBokGOXG7Y-CmD2vC6Jbb');
+        return $this->transmitImage($postObj, $postObj->MediaId);
     }
 
     /*
