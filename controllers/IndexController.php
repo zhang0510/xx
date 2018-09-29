@@ -101,7 +101,11 @@ class IndexController extends CommonController
      */
     public function receiveText($postObj)
     {
-        $content = "您输入的是" . $postObj->Content;
+        if(strstr($postObj->Content,"你是") || strstr($postObj->Content,"你叫")){
+            $content = '我是和你学';
+        }else{
+            $content = $postObj->Content;
+        }
         return $this->transmitText($postObj, $content);
     }
 
