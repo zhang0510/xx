@@ -119,8 +119,7 @@ class IndexController extends CommonController
      */
     private function receiveVoice($postObj)
     {
-        $content = "你发送的是语音，媒体ID为：".$postObj->MediaId;
-        $result = $this->transmitText($postObj, $content);
+        $result = $this->transmitVoice($postObj, $postObj->MediaId);
         return $result;
     }
 
@@ -129,8 +128,7 @@ class IndexController extends CommonController
      */
     private function receiveVideo($postObj)
     {
-        $content = "你发送的是视频，媒体ID为：".$postObj->MediaId;
-        $result = $this->transmitText($postObj, $content);
+        $result = $this->transmitVideo($postObj, $postObj->MediaId);
         return $result;
     }
 
@@ -179,6 +177,34 @@ class IndexController extends CommonController
                         <CreateTime><![CDATA[%s]]></CreateTime>
                         <MsgType><![CDATA[image]]></MsgType>
                         <Image><MediaId><![CDATA[%s]]></MediaId></Image>
+                    </xml>";
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $mediaid);
+        return $result;
+    }
+
+    //回复语音消息
+    public function transmitVoice($object,$mediaid){
+        $xmlTpl = "<xml><ToUserName><![CDATA[%s]]></ToUserName>
+                        <FromUserName><![CDATA[%s]]></FromUserName>
+                        <CreateTime>%s</CreateTime>
+                        <MsgType><![CDATA[voice]]></MsgType>
+                        <Voice><MediaId><![CDATA[%s]]></MediaId></Voice>
+                    </xml>";
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $mediaid);
+        return $result;
+    }
+
+    //回复视频消息
+    public function transmitVideo($object,$mediaid){
+        $xmlTpl = "<xml><ToUserName><![CDATA[%s]]></ToUserName>
+                        <FromUserName><![CDATA[%s]]></FromUserName>
+                        <CreateTime>%s</CreateTime>
+                        <MsgType><![CDATA[video]]></MsgType>
+                        <Video>
+                            <MediaId><![CDATA[%s]]></MediaId>
+                            <Title><![CDATA[title]]></Title>
+                            <Description><![CDATA[description]]></Description>
+                        </Video>
                     </xml>";
         $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $mediaid);
         return $result;
