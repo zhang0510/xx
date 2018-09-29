@@ -104,7 +104,11 @@ class IndexController extends CommonController
         if(strstr($postObj->Content,"你是") || strstr($postObj->Content,"你叫")){
             $content = '我是和你学';
         }elseif(strstr($postObj->Content,"笑话")){
-            $content = '神父：“你愿意娶你旁边这位女士为妻吗？”<br>男：“不，我不愿意。”<br>神父：“哦，那你愿意嫁给你旁边的男士吗？”<br>女：“不愿意。”<br>神父：“好！负负得正！我宣布两人正式成为夫妻！！”';
+            $content = '神父：“你愿意娶你旁边这位女士为妻吗？”
+男：“不，我不愿意。”
+神父：“哦，那你愿意嫁给你旁边的男士吗？”
+女：“不愿意。”
+神父：“好！负负得正！我宣布两人正式成为夫妻！！”';
         }else{
             $content = $postObj->Content;
         }
