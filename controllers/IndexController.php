@@ -234,46 +234,11 @@ class IndexController extends CommonController
         $jsonmenu = '
         {
 		    "button": [
-		        {
-		            "name": "个人简介", 
-		            "sub_button": [
-		                {
-		                    "type": "view", 
-		                    "name": "姓名", 
-		                    "url":"'.$name.'"
-		                }, 
-		                {
-		                    "type": "view", 
-		                    "name": "性别", 
-		                    "url":"'.$sex.'"
-		                }, 
-		                {
-		                    "type": "view", 
-		                    "name": "地址", 
-		                    "url":"'.$industry.'"
-		                }
-		            ]
-		        }, 
-		        {
-		            "name": "友情链接", 
-		            "sub_button": [
-		                {
-		                    "type": "view", 
-		                    "name": "百度", 
-		                    "url":"'.$bd.'"
-		                }, 
-		                {
-		                    "type": "view", 
-		                    "name": "小米", 
-		                    "url":"'.$xm.'"
-		                }, 
-		                {
-		                    "type": "view", 
-		                    "name": "阿里", 
-		                    "url":"'.$al.'"
-		                }
-		            ]
-		        }
+                {
+                    "type": "view", 
+                    "name": "查价", 
+                    "url": "http://xx.tuotuoyunche.com/month/select_price"
+                }, 
 		    ]
 		}';
         $access_token = $this->getAccsenToken();
