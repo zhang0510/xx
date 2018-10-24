@@ -63,6 +63,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/yiisoft/yii2-debug" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/yiisoft/yii2-faker" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/yiisoft/yii2-gii" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/yiisoft/yii2-redis" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/yiisoft/yii2-swiftmailer" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -131,6 +132,7 @@
           <root url="file://$MODULE_DIR$/vendor/yiisoft/yii2-debug" />
           <root url="file://$MODULE_DIR$/vendor/yiisoft/yii2-faker" />
           <root url="file://$MODULE_DIR$/vendor/yiisoft/yii2-gii" />
+          <root url="file://$MODULE_DIR$/vendor/yiisoft/yii2-redis" />
           <root url="file://$MODULE_DIR$/vendor/yiisoft/yii2-swiftmailer" />
         </CLASSES>
         <SOURCES>
@@ -195,6 +197,7 @@
           <root url="file://$MODULE_DIR$/vendor/yiisoft/yii2-debug" />
           <root url="file://$MODULE_DIR$/vendor/yiisoft/yii2-faker" />
           <root url="file://$MODULE_DIR$/vendor/yiisoft/yii2-gii" />
+          <root url="file://$MODULE_DIR$/vendor/yiisoft/yii2-redis" />
           <root url="file://$MODULE_DIR$/vendor/yiisoft/yii2-swiftmailer" />
         </SOURCES>
       </library>

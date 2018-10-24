@@ -49,10 +49,17 @@ $config = [
             'rules' => [
             ],
         ],
+        'redis' =>[
+            'class' => 'yii\redis\Connection',
+            'hostname' => '127.0.0.1',  //你的redis地址
+            'port' => 6379, //端口
+            'database' => 0,
+        ]
 
     ],
     'params' => $params,
     'defaultRoute' => 'index',
+
 ];
 
 if (YII_ENV_DEV) {
