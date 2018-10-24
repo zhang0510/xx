@@ -87,11 +87,11 @@ class MonthController extends CommonController{
         }
 
         if(empty($end_arr)){
-            echo '系统暂无目的地为此地的价格';die;
+            return json_encode(array('price'=>0,'content'=>'系统暂无目的地为此地的价格'));die;
         }
 
         if(!isset($zhi[$z_k])){
-            echo '系统暂无出发地为此地的价格';die;
+            return json_encode(array('price'=>0,'content'=>'系统暂无出发地为此地的价格'));die;
         }
         $return = array();
         //循环出发地符合查询条件的价格信息

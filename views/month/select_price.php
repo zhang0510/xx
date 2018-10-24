@@ -76,9 +76,9 @@
             obj = $('#end_city');
         }
         $.post('/month/getprice',{'start':start,'start_city':start_city,'end':end,'end_city':end_city},function(data){
-            if(data.content == ''){
+            if(data.price == '0'){
                 $('#di_price').val('0');
-                $('#line').html('暂无报价');
+                $('#line').html('<div style="color:red;font-size: 24px;">'+data.content+'</div>');
             }else{
                 $('#line').html(data.content);
                 $('#di_price').val(data.price);
