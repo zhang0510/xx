@@ -5,41 +5,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=0.6,user-scalable=no">
 <style>
     body,html{height:100%;width:100%;overflow:hidden;font-size: 24px;background-color: #fafafa;}
-    select{font-size: 24px;width:36%;height:50px;}
+    select{font-size: 24px;width:36%;height:50px;text-indent: 10px;}
     select option{font-size: 16px;}
 </style>
 <body>
     <form style="width: 95%;margin: auto;">
-        出发地：
-        <select name="start_prov" class="prov" id="start">
-            <option value="">请选择</option>
-            <?php foreach($area as $k=>$v){ ?>
-                <option value="<?php echo $v['area_id']; ?>"><?php echo $v['area_name']; ?></option>
-            <?php } ?>
-        </select>
-        <select id="start_city">
-            <option value="">请选择</option>
-        </select>
-        <br>
-        <br>
-        目的地：
-        <select name="end_prov" class="prov" id="end">
-            <option value="">请选择</option>
-            <?php foreach($area as $k=>$v){ ?>
-                <option value="<?php echo $v['area_id']; ?>"><?php echo $v['area_name']; ?></option>
-            <?php } ?>
-        </select>
-        <select id="end_city">
-            <option value="">请选择</option>
-        </select>
-        <br>
-        <br>
-        <div style="width:400px;margin: auto">
-            <input id="di_price" type="button" value="0" style="width:150px;height:100px;font-size: 48px;border-radius:15px;background-color: #ea5512;color: #ffffff"><span style="font-size: 48px;">￥</span>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input id="serch" type="button" value="查询" style="width:100px;height:50px;font-size: 24px;border-radius:10px;background-color: #cab4e2;color: #ffffff">
+        <div style="height:281px;">
+            出发地：
+            <select name="start_prov" class="prov" id="start">
+                <option value="">请选择</option>
+                <?php foreach($area as $k=>$v){ ?>
+                    <option value="<?php echo $v['area_id']; ?>"><?php echo $v['area_name']; ?></option>
+                <?php } ?>
+            </select>
+            <select id="start_city">
+                <option value="">请选择</option>
+            </select>
+            <br>
+            <br>
+            目的地：
+            <select name="end_prov" class="prov" id="end">
+                <option value="">请选择</option>
+                <?php foreach($area as $k=>$v){ ?>
+                    <option value="<?php echo $v['area_id']; ?>"><?php echo $v['area_name']; ?></option>
+                <?php } ?>
+            </select>
+            <select id="end_city">
+                <option value="">请选择</option>
+            </select>
+            <br>
+            <br>
+            <div style="width:400px;margin: auto">
+                <input id="di_price" type="button" value="0" style="width:150px;height:100px;font-size: 48px;border-radius:15px;background-color: #ea5512;color: #ffffff"><span style="font-size: 48px;">￥</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input id="serch" type="button" value="查询" style="width:100px;height:50px;font-size: 24px;border-radius:10px;background-color: #cab4e2;color: #ffffff">
+            </div>
         </div>
-        <div style="margin-top:10px;height: 668px;overflow:auto;font-size: 14px;">
+        <div id="content" style="margin-top:10px;height: 668px;overflow:auto;font-size: 14px;">
             <span id="line"></span>
         </div>
     </form>
@@ -47,6 +49,9 @@
 </html>
 <script src="/js/jquery-1.7.2.min.js"></script>
 <script>
+    height=$(document).height();
+    hei = height-330;
+    $("#content").css('height',hei);
     $(document).on('change','.prov',function(){
         id = $(this).val();
         type = $(this).attr('id');
