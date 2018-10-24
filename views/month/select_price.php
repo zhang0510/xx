@@ -1,6 +1,15 @@
 <html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=0.6,user-scalable=no">
+<style>
+    body,html{height:100%;width:100%;overflow:hidden;font-size: 24px;background-color: #fafafa;}
+    select{font-size: 24px;width:36%;height:50px;}
+    select option{font-size: 16px;}
+</style>
 <body>
-    <form action="/month/price_select" method="post">
+    <form style="width: 95%;margin: auto;">
         出发地：
         <select name="start_prov" class="prov" id="start">
             <option value="">请选择</option>
@@ -11,7 +20,8 @@
         <select id="start_city">
             <option value="">请选择</option>
         </select>
-
+        <br>
+        <br>
         目的地：
         <select name="end_prov" class="prov" id="end">
             <option value="">请选择</option>
@@ -22,8 +32,14 @@
         <select id="end_city">
             <option value="">请选择</option>
         </select>
-        <input id="serch" type="button" value="查询">
-        <div style="margin-top: 20px;height:200px;">
+        <br>
+        <br>
+        <div style="width:400px;margin: auto">
+            <input id="di_price" type="button" value="0" style="width:150px;height:100px;font-size: 48px;border-radius:15px;background-color: #ea5512;color: #ffffff"><span style="font-size: 48px;">￥</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input id="serch" type="button" value="查询" style="width:100px;height:50px;font-size: 24px;border-radius:10px;background-color: #cab4e2;color: #ffffff">
+        </div>
+        <div style="margin-top:10px;height: 668px;overflow:auto;font-size: 14px;">
             <span id="line"></span>
         </div>
     </form>
@@ -55,12 +71,14 @@
             obj = $('#end_city');
         }
         $.post('/month/getprice',{'start':start,'start_city':start_city,'end':end,'end_city':end_city},function(data){
-            if(data == ''){
+            if(data.content == ''){
+                $('#di_price').val('0');
                 $('#line').html('暂无报价');
             }else{
-                $('#line').html(data);
+                $('#line').html(data.content);
+                $('#di_price').val(data.price);
             }
 
-        })
+        },"json")
     })
 </script>

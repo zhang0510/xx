@@ -97,8 +97,10 @@ class MonthController extends CommonController{
         //循环出发地符合查询条件的价格信息
         foreach ($zhi[$z_k] as $k=>$v) {
             if ($v['end_prov'] == $end && $v['end_city'] == $end_city) {
-                $str = $area[$v['start_prov']].'/'.$area[$v['start_city']].'——'.$area[$v['end_prov']].'/'.$area[$v['end_city']];
-                $return[0][] = "直发：".$str.'；成本->'.$v['cb_price'].'；最终价格->'.$v['zz_price'].'；备注->'.$v['zhi_mark'].'；联系人->'.$v['zhi_man'];
+                $str = $area[$v['start_prov']].'/'.$area[$v['start_city']].'—'.$area[$v['end_prov']].'/'.$area[$v['end_city']];
+                $zhi_price = $v['zz_price'] == 0 ? $v['cb_price']+500 : $v['zz_price'];
+                $zhi_s_c = "<br>路线：".$str.'<br/>成本->'.$v['cb_price'].'<br/>最终价格->'.$v['zz_price'].'<br/>备注->'.$v['zhi_mark'].'<br/>联系人->'.$v['zhi_man'];
+                $return[0][] = array('price'=>$zhi_price,'content'=>$zhi_s_c);
             }else{
                 $z_k1 = $v['end_prov'].'/'.$v['end_city'];
                 $zhi[$z_k1] = isset($zhi[$z_k1])?$zhi[$z_k1]:array();
@@ -130,22 +132,30 @@ class MonthController extends CommonController{
         }
         $num = 1;
         ksort($return);
+        $content = '';
         foreach ($return as $k=>$v){
             foreach ($v as $key=>$val){
-                echo "<br/><br/><span style='font-weight: 800;'>线路$num</span>";
-                echo $val;
+                $content .=  "<div style='margin-bottom: 10px;background-color: #dcd2d2;'><span style='font-weight: 800;'>方案$num</span>";
+                $content .=  $val['content'];
+                $content .=  '</div>';
                 $num++;
+                if(isset($di_price)){
+                    $di_price = $di_price > $val['price'] ? $val['price']:$di_price;
+                }else{
+                    $di_price = $val['price'];
+                }
             }
         }
+        return json_encode(array('price'=>$di_price,'content'=>$content));
     }
 
     public function line_content($arr,$area){
         $str = $area[$arr['0']['start_prov']].'/'.$area[$arr['0']['start_city']];
         $sum = $price = 0;
         foreach($arr as $k=>$v){
-            $str .= '——'.$area[$v['end_prov']].'/'.$area[$v['end_city']];
-            $line = $area[$v['start_prov']].'/'.$area[$v['start_city']].'——'.$area[$v['end_prov']].'/'.$area[$v['end_city']];
-            $return[] = $line.'：成本->'.$v['cb_price'].'；最终价格->'.$v['zz_price'].'；备注->'.$v['zhi_mark'].'；联系人->'.$v['zhi_man'];
+            $str .= '—'.$area[$v['end_prov']].'/'.$area[$v['end_city']];
+            $line = $area[$v['start_prov']].'/'.$area[$v['start_city']].'—'.$area[$v['end_prov']].'/'.$area[$v['end_city']];
+            $return[] = '中转:'.$line.'<br/>成本->'.$v['cb_price'].'<br/>最终价格->'.$v['zz_price'].'<br/>备注->'.$v['zhi_mark'].'<br/>联系人->'.$v['zhi_man'].'<hr>';
             $price_jia = $v['zz_price'] == '0'?0:$v['zz_price']-$v['cb_price'];
             if($price_jia>$price){
                 $price = $price_jia;
@@ -154,9 +164,9 @@ class MonthController extends CommonController{
         }
         $sum += $price;
         $return[] = '总价：'.$sum;
-        $retu = implode('<br>',$return);
-        $return_str = '<br/>线路：'.$str.'<br/>'.$retu;
-        return array($sum,$return_str);
+        $retu = implode(' ',$return);
+        $return_str = '<br>路线：'.$str.'<br/><hr>'.$retu.'<hr>';
+        return array($sum,array('price'=>$sum,'content'=>$return_str));
     }
 
 }
