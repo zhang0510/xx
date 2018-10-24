@@ -280,7 +280,7 @@ class IndexController extends CommonController
         switch ($object->Event){
             //关注公众号事件
             case "subscribe":
-                $content = "你好啊！谢谢你的关注";
+                $content = "欢迎关注安达报价系统";
                 break;
             default:
                 $content = "";
