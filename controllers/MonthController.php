@@ -116,7 +116,7 @@ class MonthController extends CommonController{
             if ($v['end_prov'] == $end && $v['end_city'] == $end_city) {
                 $str = $area[$v['start_prov']].'/'.$area[$v['start_city']].'—'.$area[$v['end_prov']].'/'.$area[$v['end_city']];
                 $zhi_price = $v['zz_price'] == 0 ? $v['cb_price']+500 : $v['zz_price'];
-                $zhi_s_c = "<br>路线：".$str.'<br/>成本->'.$v['cb_price'].'<br/>最终价格->'.$v['zz_price'].'<br/>备注->'.$v['zhi_mark'].'<br/>联系人->'.$v['zhi_man'];
+                $zhi_s_c = "<br>路线：".$str.'<br/>成本->'.$v['cb_price'].'<br/>最终价格->'.$v['zz_price'].'<br/>联系人->'.$v['zhi_mark'].'<br/>备注->'.$v['zhi_man'];
                 $return[0][] = array('price'=>$zhi_price,'content'=>$zhi_s_c);
             }else{
                 $z_k1 = $v['end_prov'].'/'.$v['end_city'];
@@ -172,7 +172,7 @@ class MonthController extends CommonController{
         foreach($arr as $k=>$v){
             $str .= '—'.$area[$v['end_prov']].'/'.$area[$v['end_city']];
             $line = $area[$v['start_prov']].'/'.$area[$v['start_city']].'—'.$area[$v['end_prov']].'/'.$area[$v['end_city']];
-            $return[] = '中转:'.$line.'<br/>成本->'.$v['cb_price'].'<br/>最终价格->'.$v['zz_price'].'<br/>备注->'.$v['zhi_mark'].'<br/>联系人->'.$v['zhi_man'].'<hr>';
+            $return[] = '中转:'.$line.'<br/>成本->'.$v['cb_price'].'<br/>最终价格->'.$v['zz_price'].'<br/>联系人->'.$v['zhi_mark'].'<br/>备注->'.$v['zhi_man'].'<hr>';
             $price_jia = $v['zz_price'] == '0'?0:$v['zz_price']-$v['cb_price'];
             if($price_jia>$price){
                 $price = $price_jia;
