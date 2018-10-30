@@ -44,11 +44,28 @@ class MonthController extends CommonController{
         $request = Yii::$app->request;
         $id = $request->post('id');
         $sql = "select * from `tuo_area_price` where area_pid='{$id}'";
+        $name = $request->post('name');
+        if($name != ''){
+            $sql .= " AND area_name like '%{$name}%'";
+        }
         $area = Yii::$app->db->createCommand($sql)->queryAll();
         $str='';
         if($area){
             foreach ($area as $k=>$v){
-                $str .= '<option value="'.$v['area_id'].'">'.$v['area_name'].'</option>';
+                $str .= '<li value="'.$v['area_id'].'">'.$v['area_name'].'</li>';
+            }
+        }
+        echo $str;
+    }
+    public function actionGet_prov(){
+        $request = Yii::$app->request;
+        $name = $request->post('name');
+        $sql = "select * from `tuo_area_price` where area_name like'%{$name}%' AND  area_pid='0'";
+        $area = Yii::$app->db->createCommand($sql)->queryAll();
+        $str='';
+        if($area){
+            foreach ($area as $k=>$v){
+                $str .= '<li value="'.$v['area_id'].'">'.$v['area_name'].'</li>';
             }
         }
         echo $str;

@@ -5,34 +5,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=0.6,user-scalable=no">
 <style>
     body,html{height:100%;width:100%;overflow:hidden;font-size: 24px;background-color: #fafafa;}
-    select{font-size: 24px;width:36%;height:50px;text-indent: 10px;}
-    select option{font-size: 16px;}
+    .prov,.city{font-size: 24px;width:92%;height:50px;text-indent: 10px;}
+    ul{margin-top:3px;height:300px;overflow: auto;width:90%;border:1px solid #000000;padding-left: 0px;background-color: #ffffff;position: relative;display: none}
+    li{font-size: 24px;list-style-type:none;line-height: 43px;text-indent: 20px;}
 </style>
 <body>
     <form style="width: 95%;margin: auto;">
-        <div style="height:281px;">
-            出发地：
-            <select name="start_prov" class="prov" id="start">
-                <option value="">请选择</option>
-                <?php foreach($area as $k=>$v){ ?>
-                    <option value="<?php echo $v['area_id']; ?>"><?php echo $v['area_name']; ?></option>
-                <?php } ?>
-            </select>
-            <select id="start_city">
-                <option value="">请选择</option>
-            </select>
-            <br>
-            <br>
-            目的地：
-            <select name="end_prov" class="prov" id="end">
-                <option value="">请选择</option>
-                <?php foreach($area as $k=>$v){ ?>
-                    <option value="<?php echo $v['area_id']; ?>"><?php echo $v['area_name']; ?></option>
-                <?php } ?>
-            </select>
-            <select id="end_city">
-                <option value="">请选择</option>
-            </select>
+        <div style="height:281px;margin-top: 12px;width: 100%;">
+            <div style="float:left;width:20%;height: 80px;">
+                出发地：
+            </div>
+            <div style="float:left;width:39%;height: 80px;">
+                <input class="prov">
+                <ul class="start_ul" id="start_prov">
+                    <?php foreach($area as $k=>$v){ ?>
+                        <li value="<?php echo $v['area_id']; ?>"><?php echo $v['area_name']; ?></li>
+                    <?php } ?>
+                </ul>
+            </div>
+            <div style="float:right;width:40%;height: 80px;">
+                <input class="city">
+                <ul id="start_city" class="city_ul">
+                    <li value="">请选择</li>
+                </ul>
+            </div>
+            <div style="float:left;width:20%;height: 80px;">
+                目的地：
+            </div>
+            <div style="float:left;width:39%;height: 80px;">
+                <input class="prov">
+                <ul class="start_ul" id="end_prov">
+                    <?php foreach($area as $k=>$v){ ?>
+                        <li value="<?php echo $v['area_id']; ?>"><?php echo $v['area_name']; ?></li>
+                    <?php } ?>
+                </ul>
+            </div>
+            <div style="float:right;width:40%;height: 80px;">
+                <input class="city">
+                <ul id="end_city" class="city_ul">
+                    <li value="">请选择</li>
+                </ul>
+            </div>
             <br>
             <br>
             <div style="width:400px;margin: auto">
@@ -44,6 +57,10 @@
         <div id="content" style="margin-top:10px;height: 668px;overflow:auto;font-size: 14px;">
             <span id="line"></span>
         </div>
+        <input type="hidden" name="start_prov" value="">
+        <input type="hidden" name="end_prov" value="">
+        <input type="hidden" name="start_city" value="">
+        <input type="hidden" name="end_city" value="">
     </form>
 </body>
 </html>
@@ -52,24 +69,66 @@
     height=$(document).height();
     hei = height-330;
     $("#content").css('height',hei);
-    $(document).on('change','.prov',function(){
-        id = $(this).val();
-        type = $(this).attr('id');
-        if(type == 'start'){
+    $(document).on('focus','.prov,.city',function(){
+        $(this).next().show();
+    })
+
+    $(document).on('input','.prov',function(){
+        name = $(this).val();
+        obj = $(this);
+        $.post('/month/get_prov',{'name':name},function(data){
+            obj.next().html(data);
+        })
+    })
+
+    $(document).on('input','.city',function(){
+        name = $(this).val();
+        obj = $(this);
+        id_type = $(this).next().attr('id');
+        if(id_type == 'start_city'){
+            id = $("input[name='start_prov']").val();
+        }else{
+            id = $("input[name='end_prov']").val();
+        }
+        $.post('/month/get_city',{'id':id,'name':name},function(data){
+            obj.next().html(data);
+        })
+    })
+
+    $(document).on('click','.start_ul li',function(){
+        id = $(this).attr('value');
+        name = $(this).html();
+        $(this).parent().prev().val(name);
+        $(this).parent().hide();
+        type = $(this).parent().attr('id');
+        if(type == 'start_prov'){
             obj = $('#start_city');
+            $("input[name='start_prov']").val(id);
+            $("#start_city").prev().val('');
         }else{
             obj = $('#end_city');
+            $("input[name='end_prov']").val(id);
+            $("#end_city").prev().val('');
         }
         $.post('/month/get_city',{'id':id},function(data){
             obj.html(data);
         })
     })
 
+    $(document).on('click','.city_ul li',function(){
+        id = $(this).attr('value');
+        name = $(this).html();
+        $(this).parent().prev().val(name);
+        $(this).parent().hide();
+        type = $(this).parent().attr('id');
+        $("input[name='"+type+"']").val(id);
+    })
+
     $(document).on('click','#serch',function(){
-        start = $("#start").val();
-        start_city = $("#start_city").val();
-        end = $("#end").val();
-        end_city = $("#end_city").val();
+        start = $("input[name='start_prov']").val();
+        start_city = $("input[name='start_city']").val();
+        end = $("input[name='end_prov']").val();
+        end_city = $("input[name='end_city']").val();
         if(type == 'start'){
             obj = $('#start_city');
         }else{
