@@ -16,7 +16,7 @@
                 出发地：
             </div>
             <div style="float:left;width:39%;height: 80px;">
-                <input class="prov">
+                <input class="prov" id="start_name">
                 <ul class="start_ul" id="start_prov">
                     <?php foreach($area as $k=>$v){ ?>
                         <li value="<?php echo $v['area_id']; ?>"><?php echo $v['area_name']; ?></li>
@@ -26,14 +26,16 @@
             <div style="float:right;width:40%;height: 80px;">
                 <input class="city">
                 <ul id="start_city" class="city_ul">
-                    <li value="">请选择</li>
+                    <?php foreach($area_city as $k=>$v){ ?>
+                        <li value="<?php echo $v['area_id']; ?>"><?php echo $v['area_name']; ?></li>
+                    <?php } ?>
                 </ul>
             </div>
             <div style="float:left;width:20%;height: 80px;">
                 目的地：
             </div>
             <div style="float:left;width:39%;height: 80px;">
-                <input class="prov">
+                <input class="prov" id="end_name">
                 <ul class="start_ul" id="end_prov">
                     <?php foreach($area as $k=>$v){ ?>
                         <li value="<?php echo $v['area_id']; ?>"><?php echo $v['area_name']; ?></li>
@@ -43,7 +45,9 @@
             <div style="float:right;width:40%;height: 80px;">
                 <input class="city">
                 <ul id="end_city" class="city_ul">
-                    <li value="">请选择</li>
+                    <?php foreach($area_city as $k=>$v){ ?>
+                        <li value="<?php echo $v['area_id']; ?>"><?php echo $v['area_name']; ?></li>
+                    <?php } ?>
                 </ul>
             </div>
             <br>
@@ -91,7 +95,9 @@
             id = $("input[name='end_prov']").val();
         }
         $.post('/month/get_city',{'id':id,'name':name},function(data){
-            obj.next().html(data);
+            if(data != ''){
+                obj.next().html(data);
+            }
         })
     })
 
@@ -122,6 +128,15 @@
         $(this).parent().hide();
         type = $(this).parent().attr('id');
         $("input[name='"+type+"']").val(id);
+        $.post('/month/city_prov',{'id':id},function(data){
+            if(type == 'start_city'){
+                $("#start_name").val(data.name);
+                $("input[name='start_prov']").val(data.id);
+            }else{
+                $("#end_name").val(data.name);
+                $("input[name='end_prov']").val(data.id);
+            }
+        },"json")
     })
 
     $(document).on('click','#serch',function(){

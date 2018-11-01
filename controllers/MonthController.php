@@ -38,12 +38,32 @@ class MonthController extends CommonController{
     public function actionSelect_price(){
         $sql = "select * from `tuo_area_price` where area_pid='0'";
         $area = Yii::$app->db->createCommand($sql)->queryAll();
-        return $this->renderPartial('select_price',array('area'=>$area));
+
+        $sql_city = "select * from `tuo_area_price` where area_pid != '0'";
+        $area_city = Yii::$app->db->createCommand($sql_city)->queryAll();
+
+        return $this->renderPartial('select_price',array('area'=>$area,'area_city'=>$area_city));
     }
+
+    public function actionCity_prov(){
+        $request = Yii::$app->request;
+        $id = $request->post('id');
+        $sql_city = "select * from `tuo_area_price` where area_id='{$id}'";
+        $city = Yii::$app->db->createCommand($sql_city)->queryOne();
+
+        $prov_id = isset($city['area_pid'])?$city['area_pid']:'0';
+        $sql = "select * from `tuo_area_price` where area_id = '{$prov_id}'";
+        $area_prov = Yii::$app->db->createCommand($sql)->queryOne();
+        return json_encode(array('id'=>$area_prov['area_id'],'name'=>$area_prov['area_name']));
+    }
+
     public function actionGet_city(){
         $request = Yii::$app->request;
         $id = $request->post('id');
-        $sql = "select * from `tuo_area_price` where area_pid='{$id}'";
+        $sql = "select * from `tuo_area_price` where area_pid != '0'";
+        if($id != ''){
+            $sql .= " AND area_pid='{$id}'";
+        }
         $name = $request->post('name');
         if($name != ''){
             $sql .= " AND area_name like '%{$name}%'";
